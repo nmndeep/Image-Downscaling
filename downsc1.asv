@@ -1,0 +1,31 @@
+clc
+clear all
+close all
+
+Img1=imread('barbara.bmp');
+figure,imshow(Img1),title('Original')
+[Height, Width, Depth]=size(Img1);
+
+ if Depth==1
+     Img2=Img1
+ else
+     Img2=Img1(:,:,:);
+ end
+
+M=4;
+Img3=Img2(1:M:Height,1:M:Width,1:Depth);
+figure,imshow(Img3),title('No prefiltering')
+Img4=imresize(Img3,[Height,Width],'bicubic');
+figure,imshow(Img4),title('Downsample, no prefiltering')
+
+
+Img5=imfilter(Img2,fspecial('gaussian',[16,16],1),'symmetric','replicate','conv');
+Img6=Img5(1:M:Height,1:M:Width,1:Depth);
+figure, imshow(Img6),title('After prefiltering')
+Img7=imresize(Img6,[Height,Width],'bicubic');
+figure, imshow(Img7),title('After prefiltering-Upscaled')
+Img8=imresize(Img3,1:M:Height,1:M:Width,1:Depth,);
+figure, imshow(Img8),title('After prefiltering-Upscaled')
+% Img8=imadd(Img3,Img6);
+% Img9=imresize(Img8,[Height,Width],'bicubic');
+% figure, imshow(Img9),title('After fghghg-Upscaled')
