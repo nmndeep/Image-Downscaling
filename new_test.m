@@ -5,36 +5,37 @@ clear all
 close all
 
 s=4;
-Img1=imread('per6_orig.png');
+Img1=imread('horse.jpg');
  figure,imshow(Img1),title('Original')
 [Height, Width, Depth]=size(Img1);
-np=2;
+np=4;
 
 
 % % % % % % % % % % % % % % % % % % % % %   RED BAND SINGLE CHANNEL %%%%
 
 I =(Img1(:,:,1));
-avg4 = fspecial('average',[1 1]);
-red = imfilter(I,avg4,'conv');
+avg4 = fspecial('average',[4 4]);
+red = conv(I,avg4);
 
 % display(Result)
-L=subsampling(red,s);
+L=red(1:s:Height,1:s:Width);
 % figure,imshow(L),title('subsample');
 
 %%%%%%%%%%%%%%%%%%    L2   %%%%%%%%%%%%%%
 K1=I.^2;
-red1 = imfilter(K1,avg4,'conv');
-L2=subsampling(red1,s);
+
+red1 = conv(K1,avg4);
+L2=red1(1:s:Height,1:s:Width);
 %    figure,imshow(L),title('L2');
 
 %%%%%%%%%%%%%%%%%%%%%%%%   M   %%%%%%%%%%%%%%%%%%
 avnp =fspecial('average',[round(sqrt(np)) round(sqrt(np))]);
-M=imfilter(L,avnp,'conv');
+M=conv(L,avnp);
 %   figure,imshow(M),title('M');
 
 % % % % % % % % % % % % % % % % % %   SL   
 M2=L.^2;
-S4=imfilter(M2,avnp,'conv');
+S4=conv(M2,avnp);
 
 MM=M.^2;
 Sl=S4-(MM);
@@ -42,7 +43,7 @@ Sl=S4-(MM);
 
 % % % % % % % % % % SH %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-S7=imfilter(L2,avnp,'conv');
+S7=conv(L2,avnp);
 
 Sh=S7-(MM);
 %  figure,imshow(Sh),title('Sh');
@@ -62,24 +63,24 @@ for idx = 1:numel(R)
 end
 sz=size(M);
 I=ones(sz);
-% I=padarray(I,[1 1],'both');
-N=imfilter(I,avnp,'conv');
+I=padarray(I,2);
+N=conv(I,avnp);
 
 P=R.*double(M);
-% P=padarray(P,[1 1],'both');
+P=padarray(P,2);
 
-T=imfilter(P,avnp,'conv');
+T=conv(P,avnp);
 % figure,imshow(T),title('T');
-% M=padarray(M,[1 1],'both');
+M=padarray(M,2);
 
-M=imfilter(M,avnp,'conv');
+M=conv(M,avnp);
 %  figure,imshow(M),title('M');
-% R=padarray(R,[1 1],'both');
+R=padarray(R,2);
 
-R=imfilter(R,avnp,'conv');
+R=conv(R,avnp);
 %  figure,imshow(R),title('R');
 size(R);
-% L=padarray(L,[1 1],'both');
+L=padarray(L,2);
 K=R.*double(L);
 %  figure,imshow(K),title('K');
 
@@ -95,28 +96,28 @@ D1=uint8(D1);
 % % % % % % % % % % % % % % % % %  GREEN BAND SINGLE CHANNEL %%%%%%%%% 
   
 I =(Img1(:,:,2));
-avg4 = fspecial('average',[1 1]);
-red = imfilter(I,avg4,'conv');
+avg4 = fspecial('average',[4 4]);
+red = conv(I,avg4);
 
 % display(Result)
-L=subsampling(red,s);
+L=red(1:s:Height,1:s:Width);
 % figure,imshow(L),title('subsample');
 
 %%%%%%%%%%%%%%%%%%    L2   %%%%%%%%%%%%%%
 K1=I.^2;
 
-red1 = imfilter(K1,avg4,'conv');
-L2=subsampling(red1,s);
+red1 = conv(K1,avg4);
+L2=red1(1:s:Height,1:s:Width);
 %    figure,imshow(L),title('L2');
 
 %%%%%%%%%%%%%%%%%%%%%%%%   M   %%%%%%%%%%%%%%%%%%
-avnp =fspecial('average',[1 1]);
-M=imfilter(L,avnp,'conv');
+avnp =fspecial('average',[2 2]);
+M=conv(L,avnp);
 %   figure,imshow(M),title('M');
 
 % % % % % % % % % % % % % % % % % %   SL   
 M2=L.^2;
-S4=imfilter(M2,avnp,'conv');
+S4=conv(M2,avnp);
 
 MM=M.^2;
 Sl=S4-(MM);
@@ -124,7 +125,7 @@ Sl=S4-(MM);
 
 % % % % % % % % % % SH %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-S7=imfilter(L2,avnp,'conv');
+S7=conv(L2,avnp);
 
 Sh=S7-(MM);
 %  figure,imshow(Sh),title('Sh');
@@ -144,21 +145,21 @@ for idx = 1:numel(R)
 end
 sz=size(M);
 I=ones(sz);
-% I=padarray(I,[1 1],'both');
-N=imfilter(I,avnp,'conv');
+I=padarray(I,2);
+N=conv(I,avnp);
 
 P=R.*double(M);
-% P=padarray(P,[1 1],'both');
-T=imfilter(P,avnp,'conv');
+P=padarray(P,2);
+T=conv(P,avnp);
 % figure,imshow(T),title('T');
-% M=padarray(M,[1 1],'both');
-M=imfilter(M,avnp,'conv');
+M=padarray(M,2);
+M=conv(M,avnp);
 %  figure,imshow(M),title('M');
 
-% R=padarray(R,[1 1],'both');
-R=imfilter(R,avnp,'conv');
+R=padarray(R,2);
+R=conv(R,avnp);
 %  figure,imshow(R),title('R');
-% L=padarray(L,[1 1],'both');
+L=padarray(L,2);
 K=R.*double(L);
 %  figure,imshow(K),title('K');
 
@@ -174,28 +175,28 @@ D2=uint8(D2);
 % % % % % % % % % % %     BLUE BAND SINGLE CHANNEL %%%%%%%%%%
 
 I =(Img1(:,:,3));
-avg4 = fspecial('average',[1 1]);
-red = imfilter(I,avg4,'conv');
+avg4 = fspecial('average',[4 4]);
+red = conv(I,avg4);
 
 % display(Result)
-L=subsampling(red,s);
+L=red(1:s:Height,1:s:Width);
 % figure,imshow(L),title('subsample');
 
 %%%%%%%%%%%%%%%%%%    L2   %%%%%%%%%%%%%%
 K1=I.^2;
 
-red1 = imfilter(K1,avg4,'conv');
-L2=subsampling(red1,s);
+red1 = conv(K1,avg4);
+L2=red1(1:s:Height,1:s:Width);
 %    figure,imshow(L),title('L2');
 
 %%%%%%%%%%%%%%%%%%%%%%%%   M   %%%%%%%%%%%%%%%%%%
-avnp =fspecial('average',[1 1]);
-M=imfilter(L,avnp,'conv');
+avnp =fspecial('average',[2 2]);
+M=conv(L,avnp);
 %   figure,imshow(M),title('M');
 
 % % % % % % % % % % % % % % % % % %   SL   
 M2=L.^2;
-S4=imfilter(M2,avnp,'conv');
+S4=conv(M2,avnp);
 
 MM=M.^2;
 Sl=S4-(MM);
@@ -203,7 +204,7 @@ Sl=S4-(MM);
 
 % % % % % % % % % % SH %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-S7=imfilter(L2,avnp,'conv');
+S7=conv(L2,avnp);
 
 Sh=S7-(MM);
 %  figure,imshow(Sh),title('Sh');
@@ -224,21 +225,21 @@ end
 sk=size(R);
 sz=size(M);
 I=ones(sz);
-% I=padarray(I,[1 1],'both');
-N=imfilter(I,avnp,'conv');
+I=padarray(I,2);
+N=conv(I,avnp);
 
 P=R.*double(M);
-% P=padarray(P,[1 1],'both');
-T=imfilter(P,avnp,'conv');
+P=padarray(P,2);
+T=conv(P,avnp);
 % figure,imshow(T),title('T');
-% M=padarray(M,[1 1],'both');
-M=imfilter(M,avnp,'conv');
+M=padarray(M,2);
+M=conv(M,avnp);
 %  figure,imshow(M),title('M');
-% R=padarray(R,[1 1],'both');
+R=padarray(R,2);
 
-R=imfilter(R,avnp,'conv');
+R=conv(R,avnp);
 %  figure,imshow(R),title('R');
-% L=padarray(L,[1 1],'both');
+L=padarray(L,2);
 K=R.*double(L);
 %  figure,imshow(K),title('K');
 
@@ -250,7 +251,5 @@ D3=double(J)./N;
 D3=uint8(D3);
 % figure,imshow(D3),title('D3');
 DD=cat(3,D1,D2,D3);
-% folder='\images';
-%  imwrite(DD,fullfile(folder,'per6_our.png'));
 figure,imshow(DD),title('Perceptual-Downscaled');
 
