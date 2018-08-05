@@ -4,15 +4,5 @@ This repository has MATLAB implementation of the perceptual based downscaling al
 For results open ./images/result.md
 ### What is this repository for? ###
 
-Code for Image downscaling
+Code for faster Perceptual Based Image downscaling algorithm given by Oztireli et al. { https://graphics.ethz.ch/~cengizo/imageDownscaling.htm  }
 
-### How do I get set up? ###
-
-Clone the repo and you are good to go.
-
-### Contribution guidelines ###
-
-MATLAB
-
-### Who do I talk to? ###
-github.com/nmndeep
